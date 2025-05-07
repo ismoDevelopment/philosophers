@@ -6,7 +6,7 @@
 /*   By: ismo <ismo@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:36:14 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/08 00:33:21 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/08 00:36:40 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_philosopher_args *parse_arguments(int argc, char **argv)
 	args->time_to_die = ft_atoi(argv[2]);
 	args->time_to_eat = ft_atoi(argv[3]);
 	args->time_to_sleep = ft_atoi(argv[4]);
-	args->eat_cycles = 1;
+	args->eat_cycles = -1;
 	if (argc == 6)
 		args->eat_cycles = ft_atoi(argv[5]);
 	return (args);

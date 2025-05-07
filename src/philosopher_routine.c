@@ -6,7 +6,7 @@
 /*   By: ismo <ismo@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/07 23:55:43 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/08 00:25:39 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/08 00:36:23 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	*philosopher_routine(void *arg)
 
 	cycle = 0;
 	philosopher = (t_philosopher *)arg;
-	while (*(philosopher->running) && cycle < philosopher->args->eat_cycles)
+	while (*(philosopher->running) && (philosopher->args->eat_cycles < 0 || cycle < philosopher->args->eat_cycles))
 	{
 		pthread_mutex_lock(philosopher->server);
 		if (philosopher->args->count > 1
