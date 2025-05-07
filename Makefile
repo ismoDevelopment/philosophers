@@ -3,6 +3,7 @@ SRCS	=	main.c \
 			helpers.c \
 			parser.c \
 			philosopher.c \
+			philosopher_routine.c \
 			philosopher_utils.c \
 			threads.c \
 			sleep.c

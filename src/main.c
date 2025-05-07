@@ -6,7 +6,7 @@
 /*   By: ismo <ismo@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/28 11:42:31 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/07 21:05:42 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/08 00:15:29 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 int	main(int argc, char **argv)
 {
-	t_philosopher_args *args;
+	t_philosopher_args	*args;
 	t_philosopher		*philosopher;
 	pthread_t			**threads;
 
@@ -44,4 +44,6 @@ int	main(int argc, char **argv)
 	}
 	threads = create_threads(philosopher);
 	wait_threads(threads);
+	free_philosophers(philosopher);
+	free_threads(threads);
 }

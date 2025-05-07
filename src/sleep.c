@@ -6,7 +6,7 @@
 /*   By: ismo <ismo@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/05 18:52:58 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/07 14:59:20 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/08 00:15:18 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	psleep(t_philosopher *philosopher)
 	while (duration > 0 && time - start < philosopher->args->time_to_sleep)
 	{
 		if (!*(philosopher->running))
-			break;
+			break ;
 		time += 10;
 		usleep(10);
 	}

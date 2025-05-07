@@ -6,7 +6,7 @@
 /*   By: ismo <ismo@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:37:31 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/07 16:41:53 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/08 00:16:03 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 #include "philosopher.h"
 #include "helpers.h"
 
-t_philosopher	*construct_philosopher(int id, t_philosopher_args *args, pthread_mutex_t *server)
+t_philosopher	*construct_philosopher(int id, t_philosopher_args *args,
+	pthread_mutex_t *server)
 {
 	t_philosopher	*philosopher;
 
@@ -44,7 +45,7 @@ t_philosopher	*create_philosophers(t_philosopher_args *args)
 	t_philosopher	*tail;
 	pthread_mutex_t	*server;
 	bool			*running;
-	int	p;
+	int				p;
 
 	p = 1;
 	running = (bool *)malloc(sizeof(bool));
@@ -76,11 +77,12 @@ void	free_philosophers(t_philosopher *philosopher)
 	int				i;
 	int				count;
 	t_philosopher	*tmp;
-	pthread_mutex_t	*server;
 
 	i = 0;
-	server = philosopher->server;
 	count = philosopher->args->count;
+	free(philosopher->server);
+	free(philosopher->args);
+	free(philosopher->running);
 	while (philosopher && i < count)
 	{
 		tmp = philosopher->right;
@@ -90,5 +92,4 @@ void	free_philosophers(t_philosopher *philosopher)
 		philosopher = tmp;
 		i++;
 	}
-	free(server);
 }
