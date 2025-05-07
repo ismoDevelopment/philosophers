@@ -6,7 +6,7 @@
 /*   By: ismo <ismo@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/07 23:55:43 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/08 00:36:23 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/08 00:42:53 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ void	*philosopher_routine(void *arg)
 			&& philosopher->right->state != Eating
 			&& philosopher->left->state != Eating)
 		{
-			if (philo_eat(philosopher) < 0 || philo_sleep(philosopher) < 0
-				|| philo_think(philosopher) == 0)
+			if (philo_eat(philosopher) < 0 || philo_sleep(philosopher) < 0 || philo_think(philosopher) != 0)
 				break ;
 			cycle++;
 			continue ;

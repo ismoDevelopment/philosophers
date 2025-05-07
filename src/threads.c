@@ -6,7 +6,7 @@
 /*   By: ismo <ismo@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:41:21 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/08 00:18:25 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/08 00:43:37 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	*watcher_thread(void *arg)
 			philosopher->args->time_to_die)
 		{
 			*(philosopher->running) = false;
-			printf("%ld %ld %d died\n", time, philosopher->time_last_meal, philosopher->id);
+			printf("%ld %d died\n", time, philosopher->id);
 			break ;
 		}
 		philosopher = philosopher->right;
