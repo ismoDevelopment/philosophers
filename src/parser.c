@@ -6,7 +6,7 @@
 /*   By: ismo <ismo@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:36:14 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/07 21:08:33 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/08 00:33:21 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,16 @@ static int	ft_isspace(char c)
 
 static long	ft_atoi(const char *nptr)
 {
-	char	sign;
-	int		n;
+	long	n;
 
-	sign = ' ';
 	n = 0;
 	while (ft_isspace(*nptr))
 		nptr++;
-	if (*nptr == '+' || *nptr == '-')
-		sign = *nptr++;
 	while (*nptr && *nptr >= '0' && *nptr <= '9')
 	{
 		n = 10 * n + *nptr - '0';
 		nptr++;
 	}
-	if (sign == '-')
-		n *= -1;
 	return (n);
 }
 
@@ -50,7 +44,7 @@ bool	is_numeric(char *str)
 {
 	while (*str)
 	{
-		if (*str != '-' && (*str < '0' || *str > '9'))
+		if (*str < '0' || *str > '9')
 			return (0);
 		str++;
 	}

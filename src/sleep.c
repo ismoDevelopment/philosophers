@@ -6,7 +6,7 @@
 /*   By: ismo <ismo@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/05 18:52:58 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/08 00:15:18 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/08 00:31:50 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ size_t	get_duration(t_philosopher *philosopher)
 
 void	psleep(t_philosopher *philosopher)
 {
-	size_t	time;
-	size_t	start;
-	size_t	duration;
+	long	time;
+	long	start;
+	long	duration;
 
 	start = getms();
 	time = start;
