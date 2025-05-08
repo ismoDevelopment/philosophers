@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philosopher.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 13:37:31 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/08 18:12:06 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   philosopher.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/02 13:37:31 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/09 00:50:37 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,26 @@ t_philosopher	*construct_philosopher(int id, t_philosopher_args *args)
 	philosopher->fork = malloc(sizeof(pthread_mutex_t));
 	philosopher->time_last_meal = getms();
 	if (!philosopher->fork || pthread_mutex_init(philosopher->fork, NULL) != 0)
-		return (pthread_mutex_destroy(philosopher->fork), NULL);
+		return (free(philosopher->fork), NULL);
 	return (philosopher);
 }
 
 t_philosopher	*create_head_philosopher(t_philosopher_args *args)
 {
 	t_philosopher	*head;
-	pthread_mutex_t	*server;
 	bool			*running;
 
 	running = (bool *) malloc(sizeof(bool));
-	server = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
-	if (pthread_mutex_init(server, NULL) != 0)
-		return (free(running), free(server), NULL);
+	if (!running)
+		return (NULL);
 	head = construct_philosopher(1, args);
-	if (!running || !head)
-		return (free(running), free(server), NULL);
+	if (!head)
+		return (free(running), NULL);
 	*running = true;
 	head->running = running;
+	head->time_lock = malloc(sizeof(pthread_mutex_t));
+	if (!head->time_lock || pthread_mutex_init(head->time_lock, NULL) != 0)
+		return (free(head->time_lock), NULL);
 	return (head);
 }
 
@@ -71,6 +72,7 @@ t_philosopher	*create_philosophers(t_philosopher_args *args)
 		tail->right = construct_philosopher(p++, args);
 		if (!tail->right)
 			return (free_philosophers(head), NULL);
+		tail->right->time_lock = head->time_lock;
 		tail->right->running = head->running;
 		tail->right->left = tail;
 		tail = tail->right;
@@ -90,6 +92,8 @@ void	free_philosophers(t_philosopher *philosopher)
 	count = philosopher->args->count;
 	free(philosopher->args);
 	free(philosopher->running);
+	pthread_mutex_destroy(philosopher->time_lock);
+	free(philosopher->time_lock);
 	while (philosopher && i < count)
 	{
 		tmp = philosopher->right;

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   helpers.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 01:10:54 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/08 17:28:47 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   helpers.h                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/04/29 01:10:54 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/09 00:58:33 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HELPERS_H
 # define HELPERS_H
 
-long	getms(void);
+time_t	getms(void);
 void	setzero(void **array, int n);
 #endif

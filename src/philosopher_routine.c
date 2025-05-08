@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philosopher_routine.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/07 23:55:43 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/08 18:08:32 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   philosopher_routine.c                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/07 23:55:43 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/09 01:06:40 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,16 @@
 
 int	philo_eat(t_philosopher *philosopher)
 {
-	long	time;
+	time_t	time;
 
-	philosopher->state = Eating;
 	if (lock_forks(philosopher) != 0)
 		return (-1);
+	philosopher->state = Eating;
+	pthread_mutex_lock(philosopher->time_lock);
 	time = getms();
-	printf("%ld %d is eating\n", time, philosopher->id);
 	philosopher->time_last_meal = time;
+	pthread_mutex_unlock(philosopher->time_lock);
+	printf("%ld %d is eating\n", time, philosopher->id);
 	psleep(philosopher);
 	if (!*(philosopher->running))
 		return (-1);
@@ -67,6 +69,8 @@ void	*philosopher_routine(void *arg)
 
 	cycle = 0;
 	philosopher = (t_philosopher *)arg;
+	if (philosopher->id % 2 == 1)
+		usleep(15000);
 	while (*(philosopher->running) && (philosopher->args->eat_cycles < 0
 			|| cycle < philosopher->args->eat_cycles))
 	{
@@ -74,7 +78,6 @@ void	*philosopher_routine(void *arg)
 				|| philo_sleep(philosopher) < 0
 				|| philo_think(philosopher) < 0)
 				break ;
-		usleep(10);
 	}
 	philosopher->state = Done;
 	if (*(philosopher->running) && is_run_complete(philosopher))

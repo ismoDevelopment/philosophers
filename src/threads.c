@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   threads.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 13:41:21 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/08 18:05:34 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   threads.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/02 13:41:21 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/09 01:12:47 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,22 @@
 void	*watcher_thread(void *arg)
 {
 	t_philosopher	*philosopher;
-	long			time;
+	time_t			time;
+	time_t			time_without_meal;
 
 	philosopher = (t_philosopher *)arg;
 	while (philosopher && *(philosopher->running))
 	{
+		pthread_mutex_lock(philosopher->time_lock);
 		time = getms();
+		time_without_meal = time - philosopher->time_last_meal;
+		pthread_mutex_unlock(philosopher->time_lock);
 		if (philosopher->state != Done
-			&& time - philosopher->time_last_meal
+			&& time_without_meal
 			>= philosopher->args->time_to_die)
 		{
 			*(philosopher->running) = false;
-			printf("%ld %d died\n", time, philosopher->id);
+			printf("%ld %d died\n", getms(), philosopher->id);
 			break ;
 		}
 		philosopher = philosopher->right;

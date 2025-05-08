@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philosopher_utils.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/07 20:52:17 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/08 18:07:21 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   philosopher_utils.c                                :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/07 20:52:17 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/08 22:04:10 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,11 @@ bool	can_philosopher_eat(t_philosopher *philosopher)
 
 int	lock_forks(t_philosopher *philosopher)
 {
-	pthread_mutex_t	*first;
-	pthread_mutex_t	*second;
-
-	if (philosopher->id % 2 == 1)
-	{
-		first = philosopher->fork;
-		second = philosopher->right->fork;
-	}
-	else
-	{
-		first = philosopher->right->fork;
-		second = philosopher->fork;
-	}
-	pthread_mutex_lock(first);
+	pthread_mutex_lock(philosopher->fork);
 	if (!*(philosopher->running))
 		return (-1);
 	printf("%ld %d has taken a fork\n", getms(), philosopher->id);
-	pthread_mutex_lock(second);
+	pthread_mutex_lock(philosopher->right->fork);
 	if (!*(philosopher->running))
 		return (-1);
 	printf("%ld %d has taken a fork\n", getms(), philosopher->id);

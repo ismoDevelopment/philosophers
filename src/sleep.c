@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   sleep.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 18:52:58 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/08 15:03:52 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   sleep.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/05 18:52:58 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/09 00:59:07 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "philosopher.h"
 #include "helpers.h"
 
-long	get_duration(t_philosopher *philosopher)
+time_t	get_duration(t_philosopher *philosopher)
 {
 	if (philosopher->state == Eating)
 		return (philosopher->args->time_to_eat);
@@ -27,8 +27,8 @@ long	get_duration(t_philosopher *philosopher)
 
 void	psleep(t_philosopher *philosopher)
 {
-	long	start;
-	long	duration;
+	time_t	start;
+	time_t	duration;
 
 	start = getms();
 	duration = get_duration(philosopher);

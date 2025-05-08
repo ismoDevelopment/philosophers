@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 11:42:31 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/08 16:50:14 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/04/28 11:42:31 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/09 00:55:42 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,5 @@ int	main(int argc, char **argv)
 	wait_threads(threads);
 	free_philosophers(philosopher);
 	free_threads(threads);
+	printf("\n%ld\n", getms());
 }
