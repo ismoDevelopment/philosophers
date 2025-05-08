@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   threads.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ismo <ismo@student.codam.nl>                 +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 13:41:21 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/08 00:43:37 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   threads.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 13:41:21 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/08 15:02:17 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,9 @@ void	*watcher_thread(void *arg)
 	while (philosopher && *(philosopher->running))
 	{
 		time = getms();
-		if (philosopher->state != Eating
-			&& philosopher->state != Done
-			&& time - philosopher->time_last_meal >
-			philosopher->args->time_to_die)
+		if (philosopher->state != Done
+			&& time - philosopher->time_last_meal
+			>= philosopher->args->time_to_die)
 		{
 			*(philosopher->running) = false;
 			printf("%ld %d died\n", time, philosopher->id);
@@ -46,19 +45,20 @@ void	*watcher_thread(void *arg)
 	return (NULL);
 }
 
-pthread_t **create_threads(t_philosopher *head)
+pthread_t	**create_threads(t_philosopher *head)
 {
 	t_philosopher	*philosopher;
 	pthread_t		**threads;
 	int				i;
 
-	threads = (pthread_t **)malloc(sizeof(pthread_t *) * (head->args->count + 2));
+	threads = malloc(sizeof(pthread_t *) * (head->args->count + 2));
 	i = 0;
 	philosopher = head;
 	if (!threads)
 		return (NULL);
 	threads[head->args->count] = (pthread_t *) malloc(sizeof(pthread_t));
- 	pthread_create(threads[head->args->count], NULL, watcher_thread, philosopher);
+	pthread_create(threads[head->args->count],
+		NULL, watcher_thread, philosopher);
 	threads[head->args->count + 1] = NULL;
 	while (i < head->args->count)
 	{

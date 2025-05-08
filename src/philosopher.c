@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   philosopher.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ismo <ismo@student.codam.nl>                 +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 13:37:31 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/08 00:16:03 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   philosopher.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 13:37:31 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/08 14:18:29 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,31 +39,41 @@ t_philosopher	*construct_philosopher(int id, t_philosopher_args *args,
 	return (philosopher);
 }
 
-t_philosopher	*create_philosophers(t_philosopher_args *args)
+t_philosopher	*create_head_philosopher(t_philosopher_args *args)
 {
 	t_philosopher	*head;
-	t_philosopher	*tail;
 	pthread_mutex_t	*server;
 	bool			*running;
-	int				p;
 
-	p = 1;
-	running = (bool *)malloc(sizeof(bool));
-	server = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	running = (bool *) malloc(sizeof(bool));
+	server = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
 	if (pthread_mutex_init(server, NULL) != 0)
 		return (free(running), free(server), NULL);
-	head = construct_philosopher(p++, args, server);
+	head = construct_philosopher(1, args, server);
 	if (!running || !head)
 		return (free(running), free(server), NULL);
 	*running = true;
 	head->running = running;
+	return (head);
+}
+
+t_philosopher	*create_philosophers(t_philosopher_args *args)
+{
+	t_philosopher	*head;
+	t_philosopher	*tail;
+	int				p;
+
+	head = create_head_philosopher(args);
+	if (!head)
+		return (NULL);
+	p = 2;
 	tail = head;
 	while (p <= args->count)
 	{
-		tail->right = construct_philosopher(p++, args, server);
+		tail->right = construct_philosopher(p++, args, head->server);
 		if (!tail->right)
 			return (free_philosophers(head), NULL);
-		tail->right->running = running;
+		tail->right->running = head->running;
 		tail->right->left = tail;
 		tail = tail->right;
 	}

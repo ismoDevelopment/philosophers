@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   philosopher_utils.c                                :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ismo <ismo@student.codam.nl>                 +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/07 20:52:17 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/07 21:01:41 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   philosopher_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/07 20:52:17 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/08 14:22:07 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,12 @@ bool	is_run_complete(t_philosopher *philosopher)
 		i++;
 	}
 	return (true);
+}
+
+bool	can_philosopher_eat(t_philosopher *philosopher)
+{
+	return (philosopher->running
+		&& philosopher->args->count > 1
+		&& philosopher->right->state != Eating
+		&& philosopher->left->state != Eating);
 }

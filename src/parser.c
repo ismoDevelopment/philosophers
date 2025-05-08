@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ismo <ismo@student.codam.nl>                 +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 13:36:14 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/08 00:36:40 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 13:36:14 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/08 14:01:30 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool	is_numeric(char *str)
 	return (1);
 }
 
-t_philosopher_args *parse_arguments(int argc, char **argv)
+t_philosopher_args	*parse_arguments(int argc, char **argv)
 {
 	t_philosopher_args	*args;
 
@@ -60,7 +60,8 @@ t_philosopher_args *parse_arguments(int argc, char **argv)
 	args = (t_philosopher_args *)malloc(sizeof(t_philosopher_args));
 	if (!args)
 		return (NULL);
-	if (!is_numeric(argv[1]) || !is_numeric(argv[2]) || !is_numeric(argv[3]) || !is_numeric(argv[4]))
+	if (!is_numeric(argv[1]) || !is_numeric(argv[2])
+		|| !is_numeric(argv[3]) || !is_numeric(argv[4]))
 		return (free(args), NULL);
 	if (argc == 6 && !is_numeric(argv[5]))
 		return (free(args), NULL);
