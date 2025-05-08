@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:37:31 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/08 14:18:29 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/08 18:12:06 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@
 #include "philosopher.h"
 #include "helpers.h"
 
-t_philosopher	*construct_philosopher(int id, t_philosopher_args *args,
-	pthread_mutex_t *server)
+t_philosopher	*construct_philosopher(int id, t_philosopher_args *args)
 {
 	t_philosopher	*philosopher;
 
-	if (!args || !server)
+	if (!args)
 		return (NULL);
 	philosopher = (t_philosopher *)malloc(sizeof(t_philosopher));
 	if (!philosopher)
@@ -32,7 +31,6 @@ t_philosopher	*construct_philosopher(int id, t_philosopher_args *args,
 	philosopher->left = NULL;
 	philosopher->right = NULL;
 	philosopher->fork = malloc(sizeof(pthread_mutex_t));
-	philosopher->server = server;
 	philosopher->time_last_meal = getms();
 	if (!philosopher->fork || pthread_mutex_init(philosopher->fork, NULL) != 0)
 		return (pthread_mutex_destroy(philosopher->fork), NULL);
@@ -49,7 +47,7 @@ t_philosopher	*create_head_philosopher(t_philosopher_args *args)
 	server = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
 	if (pthread_mutex_init(server, NULL) != 0)
 		return (free(running), free(server), NULL);
-	head = construct_philosopher(1, args, server);
+	head = construct_philosopher(1, args);
 	if (!running || !head)
 		return (free(running), free(server), NULL);
 	*running = true;
@@ -70,7 +68,7 @@ t_philosopher	*create_philosophers(t_philosopher_args *args)
 	tail = head;
 	while (p <= args->count)
 	{
-		tail->right = construct_philosopher(p++, args, head->server);
+		tail->right = construct_philosopher(p++, args);
 		if (!tail->right)
 			return (free_philosophers(head), NULL);
 		tail->right->running = head->running;
@@ -90,7 +88,6 @@ void	free_philosophers(t_philosopher *philosopher)
 
 	i = 0;
 	count = philosopher->args->count;
-	free(philosopher->server);
 	free(philosopher->args);
 	free(philosopher->running);
 	while (philosopher && i < count)

@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:10:16 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/08 14:00:57 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/08 17:28:12 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <sys/time.h>
+
+void	setzero(void **array, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+		array[i++] = NULL;
+}
 
 long	getms(void)
 {

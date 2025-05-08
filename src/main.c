@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 11:42:31 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/08 15:08:12 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/08 16:50:14 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,7 @@ int	main(int argc, char **argv)
 	(void) argv;
 	args = parse_arguments(argc, argv);
 	if (!args)
-	{
-		printf("Error parsing arguments\n");
 		return (1);
-	}
 	philosopher = create_philosophers(args);
 	if (!philosopher)
 	{

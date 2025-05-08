@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:41:21 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/08 15:02:17 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/08 18:05:34 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,21 @@ pthread_t	**create_threads(t_philosopher *head)
 	int				i;
 
 	threads = malloc(sizeof(pthread_t *) * (head->args->count + 2));
-	i = 0;
-	philosopher = head;
 	if (!threads)
 		return (NULL);
+	setzero((void **) threads, head->args->count + 2);
+	i = 0;
+	philosopher = head;
 	threads[head->args->count] = (pthread_t *) malloc(sizeof(pthread_t));
-	pthread_create(threads[head->args->count],
-		NULL, watcher_thread, philosopher);
-	threads[head->args->count + 1] = NULL;
+	if (pthread_create(threads[head->args->count], NULL, watcher_thread, philosopher) != 0)
+		return (free_threads(threads), NULL);
 	while (i < head->args->count)
 	{
 		threads[i] = (pthread_t *) malloc(sizeof(pthread_t));
 		if (!threads[i])
 			return (free_threads(threads), NULL);
-		pthread_create(threads[i], NULL, philosopher_routine, philosopher);
+		if (pthread_create(threads[i], NULL, philosopher_routine, philosopher) != 0)
+			return (free_threads(threads), NULL);
 		philosopher = philosopher->right;
 		i++;
 	}

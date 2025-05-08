@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:37:48 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/08 14:11:55 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/08 18:11:54 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,12 @@ typedef struct philosopher
 	struct philosopher			*left;
 	struct philosopher			*right;
 	pthread_mutex_t				*fork;
-	pthread_mutex_t				*server;
 	t_philosopher_args			*args;
 	t_philosopher_state			state;
 }	t_philosopher;
 
 t_philosopher	*construct_philosopher(int id,
-					t_philosopher_args *args,
-					pthread_mutex_t *server);
+					t_philosopher_args *args);
 t_philosopher	*create_philosophers(t_philosopher_args *args);
 void			free_philosophers(t_philosopher *philosopher);
 #endif
