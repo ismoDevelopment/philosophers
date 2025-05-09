@@ -1,15 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   philosopher_routine.c                              :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/07 23:55:43 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/09 01:06:40 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   philosopher_routine.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/07 23:55:43 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/09 14:11:21 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,7 +26,7 @@
 
 int	philo_eat(t_philosopher *philosopher)
 {
-	time_t	time;
+	uint64_t	time;
 
 	if (lock_forks(philosopher) != 0)
 		return (-1);
@@ -34,7 +35,7 @@ int	philo_eat(t_philosopher *philosopher)
 	time = getms();
 	philosopher->time_last_meal = time;
 	pthread_mutex_unlock(philosopher->time_lock);
-	printf("%ld %d is eating\n", time, philosopher->id);
+	printf("%lu %d is eating\n", time, philosopher->id);
 	psleep(philosopher);
 	if (!*(philosopher->running))
 		return (-1);
@@ -46,7 +47,7 @@ int	philo_eat(t_philosopher *philosopher)
 int	philo_sleep(t_philosopher *philosopher)
 {
 	philosopher->state = Sleeping;
-	printf("%ld %d is sleeping\n", getms(), philosopher->id);
+	printf("%lu %d is sleeping\n", getms(), philosopher->id);
 	psleep(philosopher);
 	if (!*(philosopher->running))
 		return (-1);
@@ -56,7 +57,7 @@ int	philo_sleep(t_philosopher *philosopher)
 int	philo_think(t_philosopher *philosopher)
 {
 	philosopher->state = Thinking;
-	printf("%ld %d is thinking\n", getms(), philosopher->id);
+	printf("%lu %d is thinking\n", getms(), philosopher->id);
 	if (!*(philosopher->running))
 		return (-1);
 	return (0);
@@ -75,9 +76,9 @@ void	*philosopher_routine(void *arg)
 			|| cycle < philosopher->args->eat_cycles))
 	{
 		if (philo_eat(philosopher) < 0
-				|| philo_sleep(philosopher) < 0
-				|| philo_think(philosopher) < 0)
-				break ;
+			|| philo_sleep(philosopher) < 0
+			|| philo_think(philosopher) < 0)
+			break ;
 	}
 	philosopher->state = Done;
 	if (*(philosopher->running) && is_run_complete(philosopher))

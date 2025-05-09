@@ -1,15 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   philosopher.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 13:37:31 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/09 00:50:37 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   philosopher.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 13:37:31 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/09 14:17:04 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <pthread.h>
@@ -50,9 +51,12 @@ t_philosopher	*create_head_philosopher(t_philosopher_args *args)
 		return (free(running), NULL);
 	*running = true;
 	head->running = running;
+	head->eat_lock = malloc(sizeof(pthread_mutex_t));
+	if (!head->eat_lock || pthread_mutex_init(head->eat_lock, NULL) != 0)
+		return (free_philosophers(head), NULL);
 	head->time_lock = malloc(sizeof(pthread_mutex_t));
 	if (!head->time_lock || pthread_mutex_init(head->time_lock, NULL) != 0)
-		return (free(head->time_lock), NULL);
+		return (free_philosophers(head), NULL);
 	return (head);
 }
 
@@ -92,6 +96,8 @@ void	free_philosophers(t_philosopher *philosopher)
 	count = philosopher->args->count;
 	free(philosopher->args);
 	free(philosopher->running);
+	pthread_mutex_destroy(philosopher->eat_lock);
+	free(philosopher->eat_lock);
 	pthread_mutex_destroy(philosopher->time_lock);
 	free(philosopher->time_lock);
 	while (philosopher && i < count)

@@ -1,15 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   philosopher_utils.c                                :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/07 20:52:17 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/08 22:04:10 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   philosopher_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/07 20:52:17 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/09 14:00:21 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdint.h>
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -44,11 +45,11 @@ int	lock_forks(t_philosopher *philosopher)
 	pthread_mutex_lock(philosopher->fork);
 	if (!*(philosopher->running))
 		return (-1);
-	printf("%ld %d has taken a fork\n", getms(), philosopher->id);
+	printf("%lu %d has taken a fork\n", getms(), philosopher->id);
 	pthread_mutex_lock(philosopher->right->fork);
 	if (!*(philosopher->running))
 		return (-1);
-	printf("%ld %d has taken a fork\n", getms(), philosopher->id);
+	printf("%lu %d has taken a fork\n", getms(), philosopher->id);
 	if (!*(philosopher->running))
 		return (-1);
 	return (0);

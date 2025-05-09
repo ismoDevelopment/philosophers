@@ -1,15 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   threads.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 13:41:21 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/09 01:12:47 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   threads.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 13:41:21 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/09 14:07:12 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,9 +26,9 @@
 
 void	*watcher_thread(void *arg)
 {
-	t_philosopher	*philosopher;
-	time_t			time;
-	time_t			time_without_meal;
+	t_philosopher		*philosopher;
+	uint64_t			time;
+	uint64_t			time_without_meal;
 
 	philosopher = (t_philosopher *)arg;
 	while (philosopher && *(philosopher->running))
@@ -41,7 +42,7 @@ void	*watcher_thread(void *arg)
 			>= philosopher->args->time_to_die)
 		{
 			*(philosopher->running) = false;
-			printf("%ld %d died\n", getms(), philosopher->id);
+			printf("%lu %d died\n", getms(), philosopher->id);
 			break ;
 		}
 		philosopher = philosopher->right;
@@ -61,19 +62,20 @@ pthread_t	**create_threads(t_philosopher *head)
 	setzero((void **) threads, head->args->count + 2);
 	i = 0;
 	philosopher = head;
-	threads[head->args->count] = (pthread_t *) malloc(sizeof(pthread_t));
-	if (pthread_create(threads[head->args->count], NULL, watcher_thread, philosopher) != 0)
-		return (free_threads(threads), NULL);
 	while (i < head->args->count)
 	{
 		threads[i] = (pthread_t *) malloc(sizeof(pthread_t));
 		if (!threads[i])
 			return (free_threads(threads), NULL);
-		if (pthread_create(threads[i], NULL, philosopher_routine, philosopher) != 0)
+		if (pthread_create(threads[i],
+				NULL, philosopher_routine, philosopher) != 0)
 			return (free_threads(threads), NULL);
 		philosopher = philosopher->right;
 		i++;
 	}
+	threads[i] = (pthread_t *) malloc(sizeof(pthread_t));
+	if (pthread_create(threads[i++], NULL, watcher_thread, philosopher) != 0)
+		return (free_threads(threads), NULL);
 	return (threads);
 }
 

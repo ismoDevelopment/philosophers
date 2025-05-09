@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   helpers.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/04/29 01:10:16 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/09 00:58:54 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   helpers.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 01:10:16 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/09 14:02:29 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <sys/time.h>
 
 void	setzero(void **array, int n)
@@ -24,7 +26,7 @@ void	setzero(void **array, int n)
 		array[i++] = NULL;
 }
 
-time_t	getms(void)
+uint64_t	getms(void)
 {
 	struct timeval	tv;
 

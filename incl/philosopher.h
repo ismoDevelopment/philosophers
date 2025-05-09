@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   philosopher.h                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 13:37:48 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/09 00:59:12 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   philosopher.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 13:37:48 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/09 14:11:35 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,23 @@ typedef enum philosopher_state
 
 typedef struct philosopher_args
 {
-	int count;
-	time_t time_to_die;
-	time_t time_to_eat;
-	time_t time_to_sleep;
-	int eat_cycles;
-} t_philosopher_args;
+	int			count;
+	uint64_t	time_to_die;
+	uint64_t	time_to_eat;
+	uint64_t	time_to_sleep;
+	int			eat_cycles;
+}	t_philosopher_args;
 
 typedef struct philosopher
 {
 	int							id;
 	bool						*running;
-	time_t						time_last_meal;
+	uint64_t					time_last_meal;
 	struct philosopher			*left;
 	struct philosopher			*right;
 	pthread_mutex_t				*fork;
 	pthread_mutex_t				*time_lock;
+	pthread_mutex_t				*eat_lock;
 	t_philosopher_args			*args;
 	t_philosopher_state			state;
 }	t_philosopher;

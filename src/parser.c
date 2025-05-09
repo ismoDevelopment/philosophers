@@ -6,10 +6,11 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:36:14 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/08 14:01:30 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/09 14:00:36 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdint.h>
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdlib.h>
