@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 23:55:43 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/09 15:02:17 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/09 15:16:17 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	*philosopher_routine(void *arg)
 			|| philo_sleep(philosopher) < 0
 			|| philo_think(philosopher) < 0)
 			break ;
+		cycle++;
 	}
 	philosopher->state = Done;
 	if (*(philosopher->running) && is_run_complete(philosopher))
