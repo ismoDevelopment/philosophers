@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 23:55:43 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/09 14:11:21 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/09 14:33:40 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,16 @@ int	philo_eat(t_philosopher *philosopher)
 {
 	uint64_t	time;
 
+	pthread_mutex_lock(philosopher->eat_lock);
 	if (lock_forks(philosopher) != 0)
-		return (-1);
+		return (pthread_mutex_unlock(philosopher->eat_lock), -1);
+	pthread_mutex_unlock(philosopher->eat_lock);
 	philosopher->state = Eating;
 	pthread_mutex_lock(philosopher->time_lock);
 	time = getms();
 	philosopher->time_last_meal = time;
 	pthread_mutex_unlock(philosopher->time_lock);
-	printf("%lu %d is eating\n", time, philosopher->id);
+	print_action(philosopher, ActEat);
 	psleep(philosopher);
 	if (!*(philosopher->running))
 		return (-1);
@@ -47,7 +49,7 @@ int	philo_eat(t_philosopher *philosopher)
 int	philo_sleep(t_philosopher *philosopher)
 {
 	philosopher->state = Sleeping;
-	printf("%lu %d is sleeping\n", getms(), philosopher->id);
+	print_action(philosopher, ActSleep);
 	psleep(philosopher);
 	if (!*(philosopher->running))
 		return (-1);
@@ -57,7 +59,7 @@ int	philo_sleep(t_philosopher *philosopher)
 int	philo_think(t_philosopher *philosopher)
 {
 	philosopher->state = Thinking;
-	printf("%lu %d is thinking\n", getms(), philosopher->id);
+	print_action(philosopher, ActThink);
 	if (!*(philosopher->running))
 		return (-1);
 	return (0);

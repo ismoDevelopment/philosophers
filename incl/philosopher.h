@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:37:48 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/09 14:11:35 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/09 14:25:17 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@ typedef enum philosopher_state
 	Thinking,
 	Done
 }	t_philosopher_state;
+
+typedef enum philosopher_action
+{
+	ActEat,
+	ActSleep,
+	ActThink,
+	ActFork,
+	ActDied
+}	t_philosopher_action;
 
 typedef struct philosopher_args
 {

@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:41:21 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/09 14:07:12 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/09 14:35:06 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,10 @@ void	*watcher_thread(void *arg)
 			&& time_without_meal
 			>= philosopher->args->time_to_die)
 		{
+			pthread_mutex_lock(philosopher->eat_lock);
+			print_action(philosopher, ActDied);
 			*(philosopher->running) = false;
-			printf("%lu %d died\n", getms(), philosopher->id);
+			pthread_mutex_unlock(philosopher->eat_lock);
 			break ;
 		}
 		philosopher = philosopher->right;
