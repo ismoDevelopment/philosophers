@@ -12,21 +12,20 @@ OBJS	:=	$(SRCS:.c=.o)
 CFlags	= -Wall -Wextra -Werror -g
 
 vpath %.c src
-vpath %.o obj
 
 %.o: %.c
-	$(CC) $(CFlags) -Iincl $< -c -o $@
+	@$(CC) $(CFlags) -Iincl $< -c -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFlags) $^ -o $(NAME)
+	@$(CC) $(CFlags) $^ -o $(NAME)
 
 clean:
-	$(RM) $(OBJS)
+	@$(RM) $(OBJS)
 
 fclean: clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
 
 re: fclean all
 
