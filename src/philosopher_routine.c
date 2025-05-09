@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 23:55:43 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/09 14:33:40 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/09 15:02:17 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,18 @@ int	philo_eat(t_philosopher *philosopher)
 	uint64_t	time;
 
 	pthread_mutex_lock(philosopher->eat_lock);
+	if (!*(philosopher->running))
+		return (-1);
+	pthread_mutex_unlock(philosopher->eat_lock);
 	if (lock_forks(philosopher) != 0)
 		return (pthread_mutex_unlock(philosopher->eat_lock), -1);
-	pthread_mutex_unlock(philosopher->eat_lock);
 	philosopher->state = Eating;
 	pthread_mutex_lock(philosopher->time_lock);
 	time = getms();
 	philosopher->time_last_meal = time;
 	pthread_mutex_unlock(philosopher->time_lock);
-	print_action(philosopher, ActEat);
+	if (print_action(philosopher, ActEat, time) != 0)
+		return (-1);
 	psleep(philosopher);
 	if (!*(philosopher->running))
 		return (-1);
@@ -49,7 +52,8 @@ int	philo_eat(t_philosopher *philosopher)
 int	philo_sleep(t_philosopher *philosopher)
 {
 	philosopher->state = Sleeping;
-	print_action(philosopher, ActSleep);
+	if (print_action(philosopher, ActSleep, getms()) != 0)
+		return (-1);
 	psleep(philosopher);
 	if (!*(philosopher->running))
 		return (-1);
@@ -59,8 +63,7 @@ int	philo_sleep(t_philosopher *philosopher)
 int	philo_think(t_philosopher *philosopher)
 {
 	philosopher->state = Thinking;
-	print_action(philosopher, ActThink);
-	if (!*(philosopher->running))
+	if (print_action(philosopher, ActThink, getms()) != 0)
 		return (-1);
 	return (0);
 }
@@ -72,6 +75,8 @@ void	*philosopher_routine(void *arg)
 
 	cycle = 0;
 	philosopher = (t_philosopher *)arg;
+	if (philosopher->args->count <= 1)
+		return (NULL);
 	if (philosopher->id % 2 == 1)
 		usleep(15000);
 	while (*(philosopher->running) && (philosopher->args->eat_cycles < 0

@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:58:49 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/09 14:32:19 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/09 15:03:01 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,7 @@
 bool	is_run_complete(t_philosopher *philosopher);
 bool	can_philosopher_eat(t_philosopher *philosopher);
 int		lock_forks(t_philosopher *philosopher);
-void	print_action(t_philosopher	*philosopher, t_philosopher_action action);
+int		print_action(t_philosopher	*philosopher,
+			t_philosopher_action action, uint64_t timestamp);
+void	unlock_all(t_philosopher *philosopher);
 #endif

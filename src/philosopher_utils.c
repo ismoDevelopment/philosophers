@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:52:17 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/09 14:35:29 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/09 15:03:12 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,43 @@
 #include "philosopher.h"
 #include "helpers.h"
 
-const char *	get_action_str(t_philosopher_action action)
+void	unlock_all(t_philosopher *philosopher)
 {
-	if (action == ActEat)
-		return ("is eating");
-	if (action == ActSleep)
-		return ("is sleeping");
-	if (action == ActThink)
-		return ("is thinking");
-	if (action == ActFork)
-		return ("has taken a fork");
-	if (action == ActDied)
-		return ("died");
-	return (NULL);
+	int	i;
+
+	i = 0;
+	while (i < philosopher->args->count)
+	{
+		philosopher = philosopher->right;
+		pthread_mutex_unlock(philosopher->fork);
+		i++;
+	}
+	pthread_mutex_unlock(philosopher->eat_lock);
+	pthread_mutex_unlock(philosopher->time_lock);
 }
 
-void	print_action(t_philosopher	*philosopher, t_philosopher_action action)
+int	print_action(t_philosopher	*philosopher, t_philosopher_action action,
+	uint64_t timestamp)
 {
 	const char	*action_str;
 
+	action_str = NULL;
+	if (action == ActEat)
+		action_str = "is eating";
+	if (action == ActSleep)
+		action_str = "is sleeping";
+	if (action == ActThink)
+		action_str = "is thinking";
+	if (action == ActFork)
+		action_str = "has taken a fork";
+	if (action == ActDied)
+		action_str = "died";
 	if (!(*philosopher->running))
-		return ;
-	action_str = get_action_str(action);
+		return (-1);
 	if (!action_str)
-		return ;
-	printf("%lu %d %s", getms(), philosopher->id, action_str);
+		return (0);
+	printf("%lu %d %s\n", timestamp, philosopher->id, action_str);
+	return (0);
 }
 
 bool	is_run_complete(t_philosopher *philosopher)
@@ -70,14 +82,10 @@ bool	can_philosopher_eat(t_philosopher *philosopher)
 int	lock_forks(t_philosopher *philosopher)
 {
 	pthread_mutex_lock(philosopher->fork);
-	if (!*(philosopher->running))
+	if (print_action(philosopher, ActFork, getms()) != 0)
 		return (-1);
-	print_action(philosopher, ActFork);
 	pthread_mutex_lock(philosopher->right->fork);
-	if (!*(philosopher->running))
-		return (-1);
-	print_action(philosopher, ActFork);
-	if (!*(philosopher->running))
+	if (print_action(philosopher, ActFork, getms()) != 0)
 		return (-1);
 	return (0);
 }

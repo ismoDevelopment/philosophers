@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:37:31 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/09 14:17:04 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/09 14:37:24 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ t_philosopher	*create_philosophers(t_philosopher_args *args)
 		if (!tail->right)
 			return (free_philosophers(head), NULL);
 		tail->right->time_lock = head->time_lock;
+		tail->right->eat_lock = head->eat_lock;
 		tail->right->running = head->running;
 		tail->right->left = tail;
 		tail = tail->right;

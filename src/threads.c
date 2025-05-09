@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:41:21 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/09 14:35:06 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/09 15:00:59 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ void	*watcher_thread(void *arg)
 			>= philosopher->args->time_to_die)
 		{
 			pthread_mutex_lock(philosopher->eat_lock);
-			print_action(philosopher, ActDied);
+			print_action(philosopher, ActDied, time);
 			*(philosopher->running) = false;
-			pthread_mutex_unlock(philosopher->eat_lock);
+			unlock_all(philosopher);
 			break ;
 		}
 		philosopher = philosopher->right;
