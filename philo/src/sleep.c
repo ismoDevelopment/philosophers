@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   sleep.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 18:52:58 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/09 13:58:21 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   sleep.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/05 18:52:58 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/12 18:25:07 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,29 @@
 #include <unistd.h>
 #include "philosopher.h"
 #include "helpers.h"
+#include "philosopher_utils.h"
 
-uint64_t	get_duration(t_philosopher *philosopher)
+time_t	get_duration(t_philosopher *philosopher, t_philosopher_action action)
 {
-	if (philosopher->state == Eating)
+	if (action == ActEat)
 		return (philosopher->args->time_to_eat);
-	else if (philosopher->state == Sleeping)
+	else if (action == ActSleep)
 		return (philosopher->args->time_to_sleep);
 	return (0);
 }
 
-void	psleep(t_philosopher *philosopher)
+int	psleep(t_philosopher *philosopher, t_philosopher_action action)
 {
-	uint64_t	start;
-	uint64_t	duration;
+	time_t	start;
+	time_t	duration;
 
 	start = getms();
-	duration = get_duration(philosopher);
+	duration = get_duration(philosopher, action);
 	while (duration > 0 && getms() - start < duration)
 	{
-		if (!*(philosopher->running))
-			break ;
-		usleep(100);
+		if (!is_running(philosopher))
+			return (-1);
+		usleep(15000);
 	}
+	return (0);
 }

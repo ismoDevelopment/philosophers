@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 11:42:31 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/09 15:15:54 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/04/28 11:42:31 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/13 13:34:48 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,28 @@
 
 int	main(int argc, char **argv)
 {
-	t_philosopher_args	*args;
+	t_philosopher_args	args;
 	t_philosopher		*philosopher;
-	pthread_t			**threads;
+	pthread_t			**philosopher_threads;
+	pthread_t			*watcher_thread;
 
-	(void) argc;
-	(void) argv;
-	args = parse_arguments(argc, argv);
-	if (!args)
+	if (parse_arguments(argc, argv, &args) != 0)
 		return (printf("\n"), 1);
-	philosopher = create_philosophers(args);
+	philosopher = create_philosophers(&args);
 	if (!philosopher)
-		return (printf("\n"), free(args), 1);
-	threads = create_threads(philosopher);
-	if (!threads)
+		return (printf("\n"), 1);
+	watcher_thread = create_watcher_thread(philosopher);
+	if (!watcher_thread)
 		return (printf("\n"), free_philosophers(philosopher), 1);
-	wait_threads(threads);
+	philosopher_threads = create_philosopher_threads(philosopher);
+	if (!philosopher_threads)
+		return (printf("\n"), free(watcher_thread), 1);
+	wait_threads(philosopher_threads);
+	pthread_join(*watcher_thread, NULL);
+	pthread_mutex_lock(philosopher->running_lock);
+	*(philosopher->running) = false;
+	pthread_mutex_unlock(philosopher->running_lock);
 	if (philosopher)
 		free_philosophers(philosopher);
-	free_threads(threads);
+	free_threads(philosopher_threads);
 }

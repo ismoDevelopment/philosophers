@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philosopher_routine.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/07 23:55:43 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/09 15:16:17 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   philosopher_routine.c                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/07 23:55:43 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/13 12:55:15 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,15 @@
 
 int	philo_eat(t_philosopher *philosopher)
 {
-	uint64_t	time;
+	time_t	time;
 
-	pthread_mutex_lock(philosopher->eat_lock);
-	if (!*(philosopher->running))
-		return (-1);
-	pthread_mutex_unlock(philosopher->eat_lock);
 	if (lock_forks(philosopher) != 0)
-		return (pthread_mutex_unlock(philosopher->eat_lock), -1);
-	philosopher->state = Eating;
+		return (-1);
 	pthread_mutex_lock(philosopher->time_lock);
 	time = getms();
 	philosopher->time_last_meal = time;
 	pthread_mutex_unlock(philosopher->time_lock);
-	if (print_action(philosopher, ActEat, time) != 0)
-		return (-1);
-	psleep(philosopher);
-	if (!*(philosopher->running))
+	if (print_action(philosopher, ActEat, time) != 0 || psleep(philosopher, ActEat) != 0)
 		return (-1);
 	pthread_mutex_unlock(philosopher->fork);
 	pthread_mutex_unlock(philosopher->right->fork);
@@ -51,18 +43,13 @@ int	philo_eat(t_philosopher *philosopher)
 
 int	philo_sleep(t_philosopher *philosopher)
 {
-	philosopher->state = Sleeping;
-	if (print_action(philosopher, ActSleep, getms()) != 0)
-		return (-1);
-	psleep(philosopher);
-	if (!*(philosopher->running))
+	if (print_action(philosopher, ActSleep, getms()) != 0 || psleep(philosopher, ActSleep) != 0)
 		return (-1);
 	return (0);
 }
 
 int	philo_think(t_philosopher *philosopher)
 {
-	philosopher->state = Thinking;
 	if (print_action(philosopher, ActThink, getms()) != 0)
 		return (-1);
 	return (0);
@@ -77,9 +64,12 @@ void	*philosopher_routine(void *arg)
 	philosopher = (t_philosopher *)arg;
 	if (philosopher->args->count <= 1)
 		return (NULL);
+	pthread_mutex_lock(philosopher->time_lock);
+	philosopher->time_last_meal = getms();
+	pthread_mutex_unlock(philosopher->time_lock);
 	if (philosopher->id % 2 == 1)
 		usleep(15000);
-	while (*(philosopher->running) && (philosopher->args->eat_cycles < 0
+	while (is_running(philosopher) && (philosopher->args->eat_cycles < 0
 			|| cycle < philosopher->args->eat_cycles))
 	{
 		if (philo_eat(philosopher) < 0
@@ -88,8 +78,8 @@ void	*philosopher_routine(void *arg)
 			break ;
 		cycle++;
 	}
-	philosopher->state = Done;
-	if (*(philosopher->running) && is_run_complete(philosopher))
-		*(philosopher->running) = false;
+	pthread_mutex_lock(philosopher->finish_lock);
+	philosopher->done = true;
+	pthread_mutex_unlock(philosopher->finish_lock);
 	return (NULL);
 }

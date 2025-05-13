@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 13:36:14 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/09 14:00:36 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   parser.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/02 13:36:14 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/12 15:00:48 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,15 @@ bool	is_numeric(char *str)
 	return (1);
 }
 
-t_philosopher_args	*parse_arguments(int argc, char **argv)
+int	parse_arguments(int argc, char **argv, t_philosopher_args	 *args)
 {
-	t_philosopher_args	*args;
-
-	if (argc < 5 || argc > 6)
-		return (NULL);
-	args = (t_philosopher_args *)malloc(sizeof(t_philosopher_args));
-	if (!args)
-		return (NULL);
+	if (!args || argc < 5 || argc > 6)
+		return (-1);
 	if (!is_numeric(argv[1]) || !is_numeric(argv[2])
 		|| !is_numeric(argv[3]) || !is_numeric(argv[4]))
-		return (free(args), NULL);
+		return (-1);
 	if (argc == 6 && !is_numeric(argv[5]))
-		return (free(args), NULL);
+		return (-1);
 	args->count = ft_atoi(argv[1]);
 	args->time_to_die = ft_atoi(argv[2]);
 	args->time_to_eat = ft_atoi(argv[3]);
@@ -73,5 +68,5 @@ t_philosopher_args	*parse_arguments(int argc, char **argv)
 	args->eat_cycles = -1;
 	if (argc == 6)
 		args->eat_cycles = ft_atoi(argv[5]);
-	return (args);
+	return (0);
 }
