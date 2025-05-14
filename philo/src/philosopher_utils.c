@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/07 20:52:17 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/13 13:28:05 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/14 16:31:26 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,13 @@ int	print_action(t_philosopher	*philosopher, t_philosopher_action action,
 
 int	lock_forks(t_philosopher *philosopher)
 {
+	pthread_mutex_lock(philosopher->server_lock);
 	pthread_mutex_lock(philosopher->fork);
 	if (print_action(philosopher, ActFork, getms()) != 0)
 		return (-1);
 	pthread_mutex_lock(philosopher->right->fork);
 	if (print_action(philosopher, ActFork, getms()) != 0)
 		return (-1);
+	pthread_mutex_unlock(philosopher->server_lock);
 	return (0);
 }

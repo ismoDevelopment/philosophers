@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:37:48 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/12 17:57:52 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/14 16:31:18 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct philosopher
 	pthread_mutex_t				*finish_lock; // lock for setting and reading done boolean - not shared
 	pthread_mutex_t				*time_lock; // lock for setting and reading time_last_meal - not shared
 	pthread_mutex_t				*running_lock; // lock for when a philosopher has died in the simulation - shared
+	pthread_mutex_t				*server_lock;
 	t_philosopher_args			*args;
 }	t_philosopher;
 
