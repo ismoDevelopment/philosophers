@@ -1,0 +1,33 @@
+NAME	=	philo
+SRCS	=	main.c \
+			helpers.c \
+			parser.c \
+			philosopher.c \
+			philosopher_routine.c \
+			philosopher_utils.c \
+			threads.c \
+			sleep.c
+OBJS	:=	$(SRCS:.c=.o)
+
+CFlags	= -Wall -Wextra -Werror -g
+
+vpath %.c src
+
+%.o: %.
+	@$(CC) $(CFlags) -Iincl $< -c -o $@
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	@$(CC) $(CFlags) $^ -o $(NAME)
+
+clean:
+	@$(RM) $(OBJS)
+
+fclean: clean
+	@$(RM) $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re
+
