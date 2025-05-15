@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/28 11:42:31 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/15 20:29:08 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/15 20:58:10 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,10 @@ int	main(int argc, char **argv)
 	philosopher_threads = create_philosopher_threads(philosopher);
 	if (!philosopher_threads)
 		return (printf("\n"), free(watcher_thread), 1);
-	wait_threads(philosopher_threads);
+	pthread_join(*watcher_thread, NULL);
 	pthread_mutex_lock(philosopher->running_lock);
 	*(philosopher->running) = false;
 	pthread_mutex_unlock(philosopher->running_lock);
-	pthread_join(*watcher_thread, NULL);
 	if (philosopher)
 		free_philosophers(philosopher);
 	free_threads(philosopher_threads);
