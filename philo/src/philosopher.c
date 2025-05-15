@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:37:31 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/14 16:31:35 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/15 20:54:40 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ t_philosopher	*construct_philosopher(int id, t_philosopher_args *args)
 	if (!philosopher->fork || pthread_mutex_init(philosopher->fork, NULL) != 0)
 		return (free_philosophers(philosopher), NULL);
 	philosopher->finish_lock = malloc(sizeof(pthread_mutex_t));
-	if (!philosopher->finish_lock || pthread_mutex_init(philosopher->finish_lock, NULL) != 0)
+	if (!philosopher->finish_lock
+		|| pthread_mutex_init(philosopher->finish_lock, NULL) != 0)
 		return (free_philosophers(philosopher), NULL);
 	philosopher->time_lock = malloc(sizeof(pthread_mutex_t));
-	if (!philosopher->time_lock || pthread_mutex_init(philosopher->time_lock, NULL) != 0)
+	if (!philosopher->time_lock
+		|| pthread_mutex_init(philosopher->time_lock, NULL) != 0)
 		return (free_philosophers(philosopher), NULL);
 	return (philosopher);
 }
@@ -58,7 +60,8 @@ t_philosopher	*create_head_philosopher(t_philosopher_args *args)
 	*running = true;
 	head->running = running;
 	head->running_lock = malloc(sizeof(pthread_mutex_t));
-	if (!head->running_lock || pthread_mutex_init(head->running_lock, NULL) != 0)
+	if (!head->running_lock
+		|| pthread_mutex_init(head->running_lock, NULL) != 0)
 		return (free_philosophers(head), NULL);
 	head->server_lock = malloc(sizeof(pthread_mutex_t));
 	if (!head->server_lock || pthread_mutex_init(head->server_lock, NULL) != 0)

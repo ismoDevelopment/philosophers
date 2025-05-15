@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:36:14 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/12 15:00:48 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/15 20:53:39 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ bool	is_numeric(char *str)
 	return (1);
 }
 
-int	parse_arguments(int argc, char **argv, t_philosopher_args	 *args)
+int	parse_arguments(int argc, char **argv, t_philosopher_args *args)
 {
 	if (!args || argc < 5 || argc > 6)
 		return (-1);
@@ -68,5 +68,10 @@ int	parse_arguments(int argc, char **argv, t_philosopher_args	 *args)
 	args->eat_cycles = -1;
 	if (argc == 6)
 		args->eat_cycles = ft_atoi(argv[5]);
+	if (args->count <= 0
+		|| args->time_to_die <= 0
+		|| args->time_to_eat <= 0
+		|| args->time_to_sleep <= 0)
+		return (-1);
 	return (0);
 }

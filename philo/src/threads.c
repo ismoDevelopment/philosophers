@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:41:21 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/14 16:31:52 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/15 20:51:26 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,29 +27,14 @@
 void	*watcher_thread(void *arg)
 {
 	t_philosopher		*philosopher;
-	time_t			time;
-	time_t			time_without_meal;
-	int					n_done;
+	time_t				time;
+	time_t				time_without_meal;
 
 	philosopher = (t_philosopher *)arg;
-	n_done = 0;
 	while (philosopher && is_running(philosopher))
 	{
-		if (is_philosopher_done(philosopher))
-		{
-			if (++n_done >= philosopher->args->count)
-			{
-				pthread_mutex_lock(philosopher->running_lock);
-				*(philosopher->running) = false;
-				pthread_mutex_unlock(philosopher->running_lock);
-				unlock_all(philosopher);
-				break;
-			}
-			philosopher = philosopher->right;
-			continue;
-		}
-		else
-			n_done = 0;
+		if (is_all_done(philosopher))
+			break ;
 		pthread_mutex_lock(philosopher->time_lock);
 		time = getms();
 		time_without_meal = time - philosopher->time_last_meal;
@@ -57,13 +42,13 @@ void	*watcher_thread(void *arg)
 		if (time_without_meal >= philosopher->args->time_to_die)
 		{
 			print_action(philosopher, ActDied, getms());
-			pthread_mutex_lock(philosopher->running_lock);
-			*(philosopher->running) = false;
-			pthread_mutex_unlock(philosopher->running_lock);
 			break ;
 		}
 		philosopher = philosopher->right;
 	}
+	pthread_mutex_lock(philosopher->running_lock);
+	*(philosopher->running) = false;
+	pthread_mutex_unlock(philosopher->running_lock);
 	return (NULL);
 }
 
@@ -98,7 +83,8 @@ pthread_t	*create_watcher_thread(t_philosopher	*philosopher)
 	pthread_t	*monitor_thread;
 
 	monitor_thread = (pthread_t *) malloc(sizeof(pthread_t));
-	if (!monitor_thread || pthread_create(monitor_thread, NULL, watcher_thread, philosopher) != 0)
+	if (!monitor_thread || pthread_create(monitor_thread,
+			NULL, watcher_thread, philosopher) != 0)
 		return (free(monitor_thread), NULL);
 	return (monitor_thread);
 }

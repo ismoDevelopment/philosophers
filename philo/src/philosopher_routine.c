@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/07 23:55:43 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/13 12:55:15 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/15 20:53:13 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	philo_eat(t_philosopher *philosopher)
 	time = getms();
 	philosopher->time_last_meal = time;
 	pthread_mutex_unlock(philosopher->time_lock);
-	if (print_action(philosopher, ActEat, time) != 0 || psleep(philosopher, ActEat) != 0)
+	if (print_action(philosopher, ActEat, time) != 0
+		|| psleep(philosopher, ActEat) != 0)
 		return (-1);
 	pthread_mutex_unlock(philosopher->fork);
 	pthread_mutex_unlock(philosopher->right->fork);
@@ -43,7 +44,8 @@ int	philo_eat(t_philosopher *philosopher)
 
 int	philo_sleep(t_philosopher *philosopher)
 {
-	if (print_action(philosopher, ActSleep, getms()) != 0 || psleep(philosopher, ActSleep) != 0)
+	if (print_action(philosopher, ActSleep, getms()) != 0
+		|| psleep(philosopher, ActSleep) != 0)
 		return (-1);
 	return (0);
 }

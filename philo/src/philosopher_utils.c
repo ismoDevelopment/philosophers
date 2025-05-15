@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/07 20:52:17 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/14 16:31:26 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/15 20:51:38 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,24 @@ bool	is_philosopher_done(t_philosopher *philosopher)
 	return (done);
 }
 
-void	unlock_all(t_philosopher *philosopher)
+bool	is_all_done(t_philosopher *philosopher)
 {
-	int	i;
+	int	n_done;
+	int	p;
 
-	i = 0;
-	while (i < philosopher->args->count)
+	n_done = 0;
+	p = 0;
+	while (philosopher
+		&& p < philosopher->args->count
+		&& is_philosopher_done(philosopher))
 	{
+		if (++n_done >= philosopher->args->count)
+		{
+			return (true);
+		}
 		philosopher = philosopher->right;
-		pthread_mutex_unlock(philosopher->fork);
-		i++;
 	}
-	pthread_mutex_unlock(philosopher->time_lock);
+	return (false);
 }
 
 int	print_action(t_philosopher	*philosopher, t_philosopher_action action,
