@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   philosopher_utils.c                                :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/07 20:52:17 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/15 20:51:38 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   philosopher_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/07 20:52:17 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/16 13:33:45 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@
 #include <stdio.h>
 #include "philosopher.h"
 #include "helpers.h"
+
+void	set_running(t_philosopher *philosopher, bool value)
+{
+	pthread_mutex_lock(philosopher->running_lock);
+	*(philosopher->running) = value;
+	pthread_mutex_unlock(philosopher->running_lock);
+}
 
 bool	is_running(t_philosopher *philosopher)
 {
@@ -78,18 +85,5 @@ int	print_action(t_philosopher	*philosopher, t_philosopher_action action,
 	if (!action_str)
 		return (0);
 	printf("%ld %d %s\n", timestamp, philosopher->id, action_str);
-	return (0);
-}
-
-int	lock_forks(t_philosopher *philosopher)
-{
-	pthread_mutex_lock(philosopher->server_lock);
-	pthread_mutex_lock(philosopher->fork);
-	if (print_action(philosopher, ActFork, getms()) != 0)
-		return (-1);
-	pthread_mutex_lock(philosopher->right->fork);
-	if (print_action(philosopher, ActFork, getms()) != 0)
-		return (-1);
-	pthread_mutex_unlock(philosopher->server_lock);
 	return (0);
 }

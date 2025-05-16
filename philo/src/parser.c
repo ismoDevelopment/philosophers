@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 13:36:14 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/15 20:53:39 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 13:36:14 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/16 13:17:15 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,11 @@ int	parse_arguments(int argc, char **argv, t_philosopher_args *args)
 	args->time_to_sleep = ft_atoi(argv[4]);
 	args->eat_cycles = -1;
 	if (argc == 6)
+	{
 		args->eat_cycles = ft_atoi(argv[5]);
+		if (args->eat_cycles <= 0)
+			return (-1);
+	}
 	if (args->count <= 0
 		|| args->time_to_die <= 0
 		|| args->time_to_eat <= 0

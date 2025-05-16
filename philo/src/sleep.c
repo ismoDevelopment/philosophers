@@ -1,15 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   sleep.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/05 18:52:58 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/15 20:54:54 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   sleep.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/05 18:52:58 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/16 14:40:38 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -37,8 +38,8 @@ int	psleep(t_philosopher *philosopher, t_philosopher_action action)
 	while (duration > 0 && getms() - start < duration)
 	{
 		if (!is_running(philosopher))
-			return (-1);
-		usleep(15000);
+			return (printf("%d error sleeping\n", philosopher->id), -1);
+		usleep(1500);
 	}
 	return (0);
 }

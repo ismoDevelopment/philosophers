@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   philosopher.h                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 13:37:48 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/15 20:43:21 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   philosopher.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 13:37:48 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/16 14:41:18 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct philosopher
 	pthread_mutex_t				*finish_lock;
 	pthread_mutex_t				*time_lock;
 	pthread_mutex_t				*running_lock;
-	pthread_mutex_t				*server_lock;
 	t_philosopher_args			*args;
 }	t_philosopher;
 
@@ -59,4 +58,5 @@ t_philosopher	*construct_philosopher(int id,
 					t_philosopher_args *args);
 t_philosopher	*create_philosophers(t_philosopher_args *args);
 void			free_philosophers(t_philosopher *philosopher);
+void			set_running(t_philosopher *philosopher, bool value);
 #endif

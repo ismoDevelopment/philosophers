@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   philosopher_routine.c                              :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/07 23:55:43 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/15 20:53:13 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   philosopher_routine.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/07 23:55:43 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/16 14:54:09 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,18 @@
 #include "helpers.h"
 #include "sleep.h"
 
+int	lock_forks(t_philosopher *philosopher)
+{
+	pthread_mutex_lock(philosopher->fork);
+	if (print_action(philosopher, ActFork, getms()) != 0)
+		return (pthread_mutex_unlock(philosopher->fork), -1);
+	pthread_mutex_lock(philosopher->right->fork);
+	if (print_action(philosopher, ActFork, getms()) != 0)
+		return (pthread_mutex_unlock(philosopher->fork),
+			pthread_mutex_unlock(philosopher->right->fork), -1);
+	return (0);
+}
+
 int	philo_eat(t_philosopher *philosopher)
 {
 	time_t	time;
@@ -36,7 +48,8 @@ int	philo_eat(t_philosopher *philosopher)
 	pthread_mutex_unlock(philosopher->time_lock);
 	if (print_action(philosopher, ActEat, time) != 0
 		|| psleep(philosopher, ActEat) != 0)
-		return (-1);
+		return (pthread_mutex_unlock(philosopher->fork),
+			pthread_mutex_unlock(philosopher->right->fork), -1);
 	pthread_mutex_unlock(philosopher->fork);
 	pthread_mutex_unlock(philosopher->right->fork);
 	return (0);

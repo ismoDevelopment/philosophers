@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/04/28 11:42:31 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/15 20:58:10 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/28 11:42:31 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/16 14:50:17 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ int	main(int argc, char **argv)
 		return (printf("\n"), free_philosophers(philosopher), 1);
 	philosopher_threads = create_philosopher_threads(philosopher);
 	if (!philosopher_threads)
-		return (printf("\n"), free(watcher_thread), 1);
+		return (printf("\n"), free(watcher_thread),
+			free_philosophers(philosopher), 1);
 	pthread_join(*watcher_thread, NULL);
-	pthread_mutex_lock(philosopher->running_lock);
-	*(philosopher->running) = false;
-	pthread_mutex_unlock(philosopher->running_lock);
+	wait_threads(philosopher_threads);
 	if (philosopher)
 		free_philosophers(philosopher);
 	free_threads(philosopher_threads);
+	free(watcher_thread);
 }
