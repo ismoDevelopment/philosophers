@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 18:52:58 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/16 14:40:38 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/20 14:49:06 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	psleep(t_philosopher *philosopher, t_philosopher_action action)
 	while (duration > 0 && getms() - start < duration)
 	{
 		if (!is_running(philosopher))
-			return (printf("%d error sleeping\n", philosopher->id), -1);
+			return (-1);
 		usleep(1500);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:36:14 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/16 13:17:15 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/16 15:45:22 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,8 @@ int	parse_arguments(int argc, char **argv, t_philosopher_args *args)
 	if (argc == 6)
 	{
 		args->eat_cycles = ft_atoi(argv[5]);
-		if (args->eat_cycles <= 0)
-			return (-1);
 	}
-	if (args->count <= 0
-		|| args->time_to_die <= 0
-		|| args->time_to_eat <= 0
-		|| args->time_to_sleep <= 0)
+	if (args->count <= 0)
 		return (-1);
 	return (0);
 }

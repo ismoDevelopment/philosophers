@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:37:31 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/16 14:42:33 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/20 15:20:34 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,11 @@ t_philosopher	*construct_philosopher(int id, t_philosopher_args *args)
 	philosopher = (t_philosopher *)malloc(sizeof(t_philosopher));
 	if (!philosopher)
 		return (NULL);
+	ft_memset(philosopher, 0, sizeof(philosopher));
 	philosopher->id = id;
 	philosopher->done = false;
 	philosopher->args = args;
-	philosopher->left = NULL;
-	philosopher->right = NULL;
-	philosopher->fork = malloc(sizeof(pthread_mutex_t));
+	philosopher->fork = NULL;
 	philosopher->time_last_meal = getms();
 	if (!philosopher->fork || pthread_mutex_init(philosopher->fork, NULL) != 0)
 		return (free_philosophers(philosopher), NULL);
@@ -92,26 +91,34 @@ t_philosopher	*create_philosophers(t_philosopher_args *args)
 	return (head);
 }
 
+void	free_mutex(pthread_mutex_t *mutex)
+{
+	if (mutex)
+	{
+		pthread_mutex_destroy(mutex);
+		free(mutex);
+	}
+}
+
 void	free_philosophers(t_philosopher *philosopher)
 {
 	int				i;
 	int				count;
 	t_philosopher	*tmp;
 
+	if (!philosopher)
+		return ;
 	i = 0;
 	count = philosopher->args->count;
-	free(philosopher->running);
-	pthread_mutex_destroy(philosopher->running_lock);
-	free(philosopher->running_lock);
+	if (philosopher->running)
+		free(philosopher->running);
+	free_mutex(philosopher->running_lock);
 	while (philosopher && i < count)
 	{
 		tmp = philosopher->right;
-		pthread_mutex_destroy(philosopher->fork);
-		free(philosopher->fork);
-		pthread_mutex_destroy(philosopher->finish_lock);
-		free(philosopher->finish_lock);
-		pthread_mutex_destroy(philosopher->time_lock);
-		free(philosopher->time_lock);
+		free_mutex(philosopher->fork);
+		free_mutex(philosopher->finish_lock);
+		free_mutex(philosopher->time_lock);
 		free(philosopher);
 		philosopher = tmp;
 		i++;

@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 23:55:43 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/16 14:54:09 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/20 15:14:47 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,26 @@
 
 int	lock_forks(t_philosopher *philosopher)
 {
-	pthread_mutex_lock(philosopher->fork);
+	pthread_mutex_t	*first;
+	pthread_mutex_t	*second;
+
+	if (philosopher->id % 2)
+	{
+		first = philosopher->fork;
+		second = philosopher->right->fork;
+	}
+	else
+	{
+		first = philosopher->right->fork;
+		second = philosopher->fork;
+	}
+	pthread_mutex_lock(first);
 	if (print_action(philosopher, ActFork, getms()) != 0)
-		return (pthread_mutex_unlock(philosopher->fork), -1);
-	pthread_mutex_lock(philosopher->right->fork);
+		return (pthread_mutex_unlock(first), -1);
+	pthread_mutex_lock(second);
 	if (print_action(philosopher, ActFork, getms()) != 0)
-		return (pthread_mutex_unlock(philosopher->fork),
-			pthread_mutex_unlock(philosopher->right->fork), -1);
+		return (pthread_mutex_unlock(first),
+			pthread_mutex_unlock(second), -1);
 	return (0);
 }
 
@@ -55,16 +68,12 @@ int	philo_eat(t_philosopher *philosopher)
 	return (0);
 }
 
-int	philo_sleep(t_philosopher *philosopher)
+int	philo_sleep_think(t_philosopher *philosopher)
 {
 	if (print_action(philosopher, ActSleep, getms()) != 0
 		|| psleep(philosopher, ActSleep) != 0)
 		return (-1);
-	return (0);
-}
-
-int	philo_think(t_philosopher *philosopher)
-{
+	usleep(1500);
 	if (print_action(philosopher, ActThink, getms()) != 0)
 		return (-1);
 	return (0);
@@ -79,6 +88,8 @@ void	*philosopher_routine(void *arg)
 	philosopher = (t_philosopher *)arg;
 	if (philosopher->args->count <= 1)
 		return (NULL);
+	while (!philosopher->running)
+		continue ;
 	pthread_mutex_lock(philosopher->time_lock);
 	philosopher->time_last_meal = getms();
 	pthread_mutex_unlock(philosopher->time_lock);
@@ -87,9 +98,7 @@ void	*philosopher_routine(void *arg)
 	while (is_running(philosopher) && (philosopher->args->eat_cycles < 0
 			|| cycle < philosopher->args->eat_cycles))
 	{
-		if (philo_eat(philosopher) < 0
-			|| philo_sleep(philosopher) < 0
-			|| philo_think(philosopher) < 0)
+		if (philo_eat(philosopher) < 0 || philo_sleep_think(philosopher) < 0)
 			break ;
 		cycle++;
 	}
