@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 11:42:31 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 16:56:40 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/20 17:14:38 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ int	main(int argc, char **argv)
 	philosopher = create_philosophers(&args);
 	if (!philosopher)
 		return (clean(philosopher, NULL, NULL), 1);
-	watcher_thread = create_watcher_thread(philosopher);
-	if (!watcher_thread)
-		return (clean(philosopher, NULL, watcher_thread), 1);
 	philosopher_threads = create_philosopher_threads(philosopher);
 	if (!philosopher_threads)
-		return (clean(philosopher, philosopher_threads, watcher_thread), 1);
+		return (clean(philosopher, philosopher_threads, NULL), 1);
 	set_running(philosopher, true);
+	watcher_thread = create_watcher_thread(philosopher);
+	if (!watcher_thread)
+		return (clean(philosopher, philosopher_threads, watcher_thread), 1);
 	pthread_join(*watcher_thread, NULL);
 	wait_threads(philosopher_threads);
 	if (philosopher)
