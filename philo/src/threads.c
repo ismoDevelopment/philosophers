@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:41:21 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 15:10:52 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/20 15:34:45 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	wait_threads(pthread_t **threads)
 	i = 0;
 	while (threads[i])
 	{
-		pthread_join(*threads[i], NULL);
+		pthread_join(*(threads[i]), NULL);
 		i++;
 	}
 }
@@ -107,9 +107,10 @@ void	free_threads(pthread_t **threads)
 	int	i;
 
 	i = 0;
+	if (!threads)
+		return ;
 	while (threads[i])
 	{
-		pthread_detach(*threads[i]);
 		free(threads[i++]);
 	}
 	free(threads);

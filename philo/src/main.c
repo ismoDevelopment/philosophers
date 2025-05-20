@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 11:42:31 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 15:15:23 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/20 15:35:06 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	clean(t_philosopher	*philosopher,
 	}
 	if (watcher_thread)
 	{
-		pthread_detach(*watcher_thread);
 		free(watcher_thread);
 	}
 }

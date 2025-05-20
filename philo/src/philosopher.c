@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:37:31 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 15:20:34 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/20 15:23:03 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_philosopher	*construct_philosopher(int id, t_philosopher_args *args)
 	philosopher->id = id;
 	philosopher->done = false;
 	philosopher->args = args;
-	philosopher->fork = NULL;
+	philosopher->fork = malloc(sizeof(pthread_mutex_t));
 	philosopher->time_last_meal = getms();
 	if (!philosopher->fork || pthread_mutex_init(philosopher->fork, NULL) != 0)
 		return (free_philosophers(philosopher), NULL);
