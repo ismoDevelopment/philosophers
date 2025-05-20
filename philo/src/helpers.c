@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:10:16 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 14:42:38 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/20 16:32:07 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	setzero(void **array, int n)
 		array[i++] = NULL;
 }
 
-time_t	getms(void)
+long	getms(void)
 {
 	struct timeval	tv;
 

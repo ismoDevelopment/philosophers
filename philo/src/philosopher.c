@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:37:31 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 15:23:03 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/20 16:50:37 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <stdio.h>
 #include "philosopher.h"
 #include "helpers.h"
 
@@ -56,7 +57,7 @@ t_philosopher	*create_head_philosopher(t_philosopher_args *args)
 	head = construct_philosopher(1, args);
 	if (!head)
 		return (free(running), NULL);
-	*running = true;
+	*running = false;
 	head->running = running;
 	head->running_lock = malloc(sizeof(pthread_mutex_t));
 	if (!head->running_lock

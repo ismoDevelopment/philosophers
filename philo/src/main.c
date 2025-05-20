@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 11:42:31 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 15:35:06 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/20 16:56:40 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,9 @@ void	clean(t_philosopher	*philosopher,
 	printf("Malloc error\n");
 	free_philosophers(philosopher);
 	if (philosopher_threads)
-	{
 		free_threads(philosopher_threads);
-	}
 	if (watcher_thread)
-	{
 		free(watcher_thread);
-	}
 }
 
 int	main(int argc, char **argv)
@@ -51,7 +47,6 @@ int	main(int argc, char **argv)
 	philosopher = create_philosophers(&args);
 	if (!philosopher)
 		return (clean(philosopher, NULL, NULL), 1);
-	set_running(philosopher, false);
 	watcher_thread = create_watcher_thread(philosopher);
 	if (!watcher_thread)
 		return (clean(philosopher, NULL, watcher_thread), 1);

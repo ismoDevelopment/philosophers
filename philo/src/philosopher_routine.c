@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 23:55:43 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 15:14:47 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/20 16:59:24 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	*philosopher_routine(void *arg)
 	philosopher = (t_philosopher *)arg;
 	if (philosopher->args->count <= 1)
 		return (NULL);
-	while (!philosopher->running)
+	while (!is_running(philosopher))
 		continue ;
 	pthread_mutex_lock(philosopher->time_lock);
 	philosopher->time_last_meal = getms();

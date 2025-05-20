@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 20:52:17 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/16 13:33:45 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/20 16:32:07 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ bool	is_all_done(t_philosopher *philosopher)
 }
 
 int	print_action(t_philosopher	*philosopher, t_philosopher_action action,
-	time_t timestamp)
+	long timestamp)
 {
 	const char	*action_str;
 

@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:41:21 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 15:34:45 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/20 16:32:07 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 void	*watcher_thread(void *arg)
 {
 	t_philosopher		*philosopher;
-	time_t				time;
-	time_t				time_without_meal;
+	long				time;
+	long				time_without_meal;
 
 	philosopher = (t_philosopher *)arg;
 	while (philosopher && is_running(philosopher))
