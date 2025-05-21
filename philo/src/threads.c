@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   threads.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 13:41:21 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 16:32:07 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   threads.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/02 13:41:21 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/21 23:35:04 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,40 @@
 #include "helpers.h"
 #include "sleep.h"
 
+bool	is_dead(t_philosopher *philosopher)
+{
+	long				time;
+	long				time_without_meal;
+	bool				dead;
+
+	dead = false;
+	pthread_mutex_lock(philosopher->running_lock);
+	pthread_mutex_lock(philosopher->time_lock);
+	time = getms();
+	time_without_meal = time - philosopher->time_last_meal;
+	pthread_mutex_unlock(philosopher->time_lock);
+	if (time_without_meal >= philosopher->args->time_to_die)
+	{
+		*(philosopher->running) = false;
+		dead = true;
+		print_action(philosopher, ActDied, getms());
+	}
+	pthread_mutex_unlock(philosopher->running_lock);
+	return (dead);
+}
+
 void	*watcher_thread(void *arg)
 {
 	t_philosopher		*philosopher;
-	long				time;
-	long				time_without_meal;
 
 	philosopher = (t_philosopher *)arg;
 	while (philosopher && is_running(philosopher))
 	{
-		if (!is_philosopher_done(philosopher))
-		{
-			pthread_mutex_lock(philosopher->time_lock);
-			time = getms();
-			time_without_meal = time - philosopher->time_last_meal;
-			pthread_mutex_unlock(philosopher->time_lock);
-			if (time_without_meal >= philosopher->args->time_to_die)
-			{
-				print_action(philosopher, ActDied, getms());
-				break ;
-			}
-		}
-		else if (is_all_done(philosopher))
+		if ((!is_philosopher_done(philosopher) && is_dead(philosopher))
+			|| is_all_done(philosopher))
 			break ;
 		philosopher = philosopher->right;
 	}
-	set_running(philosopher, false);
 	return (NULL);
 }
 
@@ -77,17 +85,6 @@ pthread_t	**create_philosopher_threads(t_philosopher *head)
 		i++;
 	}
 	return (threads);
-}
-
-pthread_t	*create_watcher_thread(t_philosopher	*philosopher)
-{
-	pthread_t	*monitor_thread;
-
-	monitor_thread = (pthread_t *) malloc(sizeof(pthread_t));
-	if (!monitor_thread || pthread_create(monitor_thread,
-			NULL, watcher_thread, philosopher) != 0)
-		return (free(monitor_thread), NULL);
-	return (monitor_thread);
 }
 
 void	wait_threads(pthread_t **threads)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philosopher_utils.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/07 20:52:17 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 16:32:07 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   philosopher_utils.c                                :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/07 20:52:17 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/21 23:30:32 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ int	print_action(t_philosopher	*philosopher, t_philosopher_action action,
 		action_str = "has taken a fork";
 	if (action == ActDied)
 		action_str = "died";
-	if (action != ActDied && !is_running(philosopher))
-		return (-1);
 	if (!action_str)
 		return (0);
+	if (action != ActDied && !is_running(philosopher))
+		return (-1);
 	printf("%ld %d %s\n", timestamp, philosopher->id, action_str);
 	return (0);
 }
