@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:37:31 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/22 13:46:31 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/22 14:10:59 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@ static t_philosopher	*create_head_philosopher(t_philosopher_args *args)
 	if (!head->running_lock
 		|| pthread_mutex_init(head->running_lock, NULL) != 0)
 		return (free_philosophers(head), NULL);
+	head->print_lock = malloc(sizeof(pthread_mutex_t));
+	if (!head->print_lock
+		|| pthread_mutex_init(head->print_lock, NULL) != 0)
+		return (free_philosophers(head), NULL);
 	return (head);
 }
 
@@ -84,6 +88,7 @@ t_philosopher	*create_philosophers(t_philosopher_args *args)
 			return (free_philosophers(head), NULL);
 		tail->right->running = head->running;
 		tail->right->running_lock = head->running_lock;
+		tail->right->print_lock = head->print_lock;
 		tail->right->left = tail;
 		tail = tail->right;
 	}
@@ -114,6 +119,7 @@ void	free_philosophers(t_philosopher *philosopher)
 	if (philosopher->running)
 		free(philosopher->running);
 	free_mutex(philosopher->running_lock);
+	free_mutex(philosopher->print_lock);
 	while (philosopher && i < count)
 	{
 		tmp = philosopher->right;

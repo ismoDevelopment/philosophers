@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/07 20:52:17 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/21 23:30:32 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/22 14:09:20 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	print_action(t_philosopher	*philosopher, t_philosopher_action action,
 {
 	const char	*action_str;
 
+	pthread_mutex_lock(philosopher->print_lock);
 	action_str = NULL;
 	if (action == ActEat)
 		action_str = "is eating";
@@ -85,5 +86,6 @@ int	print_action(t_philosopher	*philosopher, t_philosopher_action action,
 	if (action != ActDied && !is_running(philosopher))
 		return (-1);
 	printf("%ld %d %s\n", timestamp, philosopher->id, action_str);
+	pthread_mutex_unlock(philosopher->print_lock);
 	return (0);
 }
