@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philosopher.h                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 13:37:48 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 15:01:09 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   philosopher.h                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/02 13:37:48 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/22 13:46:08 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ typedef enum philosopher_action
 typedef struct philosopher_args
 {
 	int			count;
-	time_t		time_to_die;
-	time_t		time_to_eat;
-	time_t		time_to_sleep;
+	int			time_to_die;
+	int			time_to_eat;
+	int			time_to_sleep;
 	int			eat_cycles;
 }	t_philosopher_args;
 
@@ -54,8 +54,6 @@ typedef struct philosopher
 	t_philosopher_args			*args;
 }	t_philosopher;
 
-t_philosopher	*construct_philosopher(int id,
-					t_philosopher_args *args);
 t_philosopher	*create_philosophers(t_philosopher_args *args);
 void			free_philosophers(t_philosopher *philosopher);
 void			set_running(t_philosopher *philosopher, bool value);

@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/07 23:55:43 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/21 23:10:15 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/22 13:45:14 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include "helpers.h"
 #include "sleep.h"
 
-int	lock_forks(t_philosopher *philosopher)
+static int	lock_forks(t_philosopher *philosopher)
 {
 	pthread_mutex_t	*first;
 	pthread_mutex_t	*second;
@@ -49,7 +49,7 @@ int	lock_forks(t_philosopher *philosopher)
 	return (0);
 }
 
-int	philo_eat(t_philosopher *philosopher)
+static int	philo_eat(t_philosopher *philosopher)
 {
 	time_t	time;
 
@@ -68,7 +68,7 @@ int	philo_eat(t_philosopher *philosopher)
 	return (0);
 }
 
-int	philo_sleep_think(t_philosopher *philosopher)
+static int	philo_sleep_think(t_philosopher *philosopher)
 {
 	if (print_action(philosopher, ActSleep, getms()) != 0
 		|| psleep(philosopher, ActSleep) != 0)

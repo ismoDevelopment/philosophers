@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:41:21 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/21 23:35:04 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/22 13:46:57 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include "helpers.h"
 #include "sleep.h"
 
-bool	is_dead(t_philosopher *philosopher)
+static bool	is_dead(t_philosopher *philosopher)
 {
 	long				time;
 	long				time_without_meal;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 13:36:14 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/16 15:45:22 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   parser.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/02 13:36:14 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/22 13:44:11 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,37 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <limits.h>
 #include "philosopher.h"
 
 static int	ft_isspace(char c)
 {
 	return (c == ' '
-		|| c == '\f'
-		|| c == '\n'
-		|| c == '\r'
-		|| c == '\t'
-		|| c == '\v');
+		|| c == '\n');
 }
 
-static long	ft_atoi(const char *nptr)
+static int	ft_atoi(char *nptr)
 {
-	long	n;
+	int	n;
+	int	new_n;
 
 	n = 0;
+	new_n = 0;
 	while (ft_isspace(*nptr))
 		nptr++;
 	while (*nptr && *nptr >= '0' && *nptr <= '9')
 	{
-		n = 10 * n + *nptr - '0';
+		new_n = 10 * n + *nptr - '0';
+		if (new_n < n)
+			return (-1);
+		n = new_n;
 		nptr++;
 	}
 	return (n);
 }
 
-bool	is_numeric(char *str)
+static bool	is_numeric(char *str)
 {
 	while (*str)
 	{
@@ -69,8 +72,13 @@ int	parse_arguments(int argc, char **argv, t_philosopher_args *args)
 	if (argc == 6)
 	{
 		args->eat_cycles = ft_atoi(argv[5]);
+		if (args->eat_cycles < 0)
+			return (-1);
 	}
-	if (args->count <= 0)
+	if (args->count < 0
+		|| args->time_to_die < 0
+		|| args->time_to_eat < 0
+		|| args->time_to_sleep < 0)
 		return (-1);
 	return (0);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philosopher.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 13:37:31 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 16:50:37 by ibenne           ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   philosopher.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/02 13:37:31 by ismo          #+#    #+#                 */
+/*   Updated: 2025/05/22 13:46:31 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "philosopher.h"
 #include "helpers.h"
 
-t_philosopher	*construct_philosopher(int id, t_philosopher_args *args)
+static t_philosopher	*construct_philosopher(int id, t_philosopher_args *args)
 {
 	t_philosopher	*philosopher;
 
@@ -46,7 +46,7 @@ t_philosopher	*construct_philosopher(int id, t_philosopher_args *args)
 	return (philosopher);
 }
 
-t_philosopher	*create_head_philosopher(t_philosopher_args *args)
+static t_philosopher	*create_head_philosopher(t_philosopher_args *args)
 {
 	t_philosopher	*head;
 	bool			*running;
@@ -92,7 +92,7 @@ t_philosopher	*create_philosophers(t_philosopher_args *args)
 	return (head);
 }
 
-void	free_mutex(pthread_mutex_t *mutex)
+static void	free_mutex(pthread_mutex_t *mutex)
 {
 	if (mutex)
 	{

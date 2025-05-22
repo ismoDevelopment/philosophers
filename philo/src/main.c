@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/28 11:42:31 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/21 23:19:39 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/22 13:44:06 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 #include "parser.h"
 #include "threads.h"
 
-void	clean(t_philosopher	*philosopher,
+static void	clean(t_philosopher	*philosopher,
 	pthread_t **philosopher_threads,
 	pthread_t *watcher_thread)
 {

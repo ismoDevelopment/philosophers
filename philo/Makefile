@@ -9,7 +9,7 @@ SRCS	=	main.c \
 			sleep.c
 OBJS	:=	$(SRCS:.c=.o)
 
-CFlags	= -Wall -Wextra -Werror -g -fsanitize=thread
+CFlags	= -Wall -Wextra -Werror -g
 
 vpath %.c src
 
