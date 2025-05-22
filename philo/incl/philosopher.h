@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:37:48 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/22 14:05:50 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/22 14:36:46 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct philosopher
 	int							id;
 	bool						done;
 	bool						*running;
-	time_t						time_last_meal;
+	long						time_last_meal;
 	struct philosopher			*left;
 	struct philosopher			*right;
 	pthread_mutex_t				*fork;

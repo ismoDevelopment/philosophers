@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/07 23:55:43 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/22 13:45:14 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/22 14:44:36 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	lock_forks(t_philosopher *philosopher)
 
 static int	philo_eat(t_philosopher *philosopher)
 {
-	time_t	time;
+	long	time;
 
 	if (lock_forks(philosopher) != 0)
 		return (-1);
@@ -73,9 +73,9 @@ static int	philo_sleep_think(t_philosopher *philosopher)
 	if (print_action(philosopher, ActSleep, getms()) != 0
 		|| psleep(philosopher, ActSleep) != 0)
 		return (-1);
-	usleep(1500);
 	if (print_action(philosopher, ActThink, getms()) != 0)
 		return (-1);
+	usleep(1500);
 	return (0);
 }
 

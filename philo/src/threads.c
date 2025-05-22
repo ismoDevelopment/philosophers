@@ -6,7 +6,7 @@
 /*   By: ibenne <ibenne@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:41:21 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/22 13:46:57 by ismo          ########   odam.nl         */
+/*   Updated: 2025/05/22 14:43:52 by ismo          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	*watcher_thread(void *arg)
 			|| is_all_done(philosopher))
 			break ;
 		philosopher = philosopher->right;
+		usleep(1000);
 	}
 	return (NULL);
 }
