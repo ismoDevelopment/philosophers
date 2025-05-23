@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   philosopher_routine.c                              :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/07 23:55:43 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/22 14:44:36 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   philosopher_routine.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/07 23:55:43 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/23 14:05:06 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	*philosopher_routine(void *arg)
 	philosopher->time_last_meal = getms();
 	pthread_mutex_unlock(philosopher->time_lock);
 	if (philosopher->id % 2 == 1)
-		usleep(15000);
+		usleep(1500);
 	while (is_running(philosopher) && (philosopher->args->eat_cycles < 0
 			|| cycle < philosopher->args->eat_cycles))
 	{

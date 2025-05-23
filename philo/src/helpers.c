@@ -6,13 +6,12 @@
 /*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:10:16 by ismo              #+#    #+#             */
-/*   Updated: 2025/05/20 16:32:07 by ibenne           ###   ########.fr       */
+/*   Updated: 2025/05/23 13:36:53 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stdlib.h>
-#include <pthread.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/time.h>

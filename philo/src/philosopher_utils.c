@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   philosopher_utils.c                                :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibenne <ibenne@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/07 20:52:17 by ismo          #+#    #+#                 */
-/*   Updated: 2025/05/22 14:09:20 by ismo          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   philosopher_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibenne <ibenne@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/07 20:52:17 by ismo              #+#    #+#             */
+/*   Updated: 2025/05/23 13:52:30 by ibenne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	print_action(t_philosopher	*philosopher, t_philosopher_action action,
 	if (!action_str)
 		return (0);
 	if (action != ActDied && !is_running(philosopher))
-		return (-1);
+		return (pthread_mutex_unlock(philosopher->print_lock), -1);
 	printf("%ld %d %s\n", timestamp, philosopher->id, action_str);
 	pthread_mutex_unlock(philosopher->print_lock);
 	return (0);
